@@ -30,7 +30,7 @@ class ShoesSpider(scrapy.Spider):
                 headers=self.headers,
                 callback=self.parse_details
             )
-
+            break
 
     def parse_details(self, response):
         yield {
@@ -39,6 +39,11 @@ class ShoesSpider(scrapy.Spider):
             # "price_full": 
             # "price_drop":
             "img_url": response.xpath('.//img[@class="iiz__img "][1]/@src').get(),
-            "category": response.xpath('.//a[@data-testid="ViewAllPills-related-category-link"]').extract(),
+            "category": self.get_categories(response),
         }
 
+    @staticmethod
+    def get_categories(response):
+        categories = response.xpath('.//a[@data-testid="ViewAllPills-related-category-link"]')
+        category_list = [category.xpath('.//text()').get() for category in categories]
+        return list(set(category_list))

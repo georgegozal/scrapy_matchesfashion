@@ -1,4 +1,5 @@
 import scrapy
+import re
 
 
 class ShoesSpider(scrapy.Spider):
@@ -28,7 +29,8 @@ class ShoesSpider(scrapy.Spider):
             yield scrapy.Request(
                 response.urljoin(item_link),
                 headers=self.headers,
-                callback=self.parse_details
+                callback=self.parse_details,
+                meta={"gender": self.get_gender(response)}
             )
             break
 
@@ -38,8 +40,10 @@ class ShoesSpider(scrapy.Spider):
             "url": response.url,
             # "price_full": 
             # "price_drop":
+            "price": response.xpath('.//span[@data-testid="ProductPrice-billing-price"]/text()').get(),
             "image_url": self.fix_picture_url(response),
             "category": self.get_categories(response),
+            "gender": response.request.meta.get("gender")
         }
 
     @staticmethod
@@ -53,3 +57,12 @@ class ShoesSpider(scrapy.Spider):
         url = response.xpath('.//img[@class="iiz__img "][1]/@src').get()
         fixed_url = f"https:{url}"
         return fixed_url
+
+    @staticmethod
+    def get_gender(response):
+        gender_dict = {
+            "mens": "Male",
+            "womens": "Female"
+        }
+        gender = re.search(r'/(womens|mens)/', response.url).group(1)
+        return gender_dict.get(gender)

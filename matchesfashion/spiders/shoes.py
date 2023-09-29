@@ -38,7 +38,7 @@ class ShoesSpider(scrapy.Spider):
             "url": response.url,
             # "price_full": 
             # "price_drop":
-            "img_url": response.xpath('.//img[@class="iiz__img "][1]/@src').get(),
+            "image_url": self.fix_picture_url(response),
             "category": self.get_categories(response),
         }
 
@@ -47,3 +47,9 @@ class ShoesSpider(scrapy.Spider):
         categories = response.xpath('.//a[@data-testid="ViewAllPills-related-category-link"]')
         category_list = [category.xpath('.//text()').get() for category in categories]
         return list(set(category_list))
+
+    @staticmethod
+    def fix_picture_url(response):
+        url = response.xpath('.//img[@class="iiz__img "][1]/@src').get()
+        fixed_url = f"https:{url}"
+        return fixed_url

@@ -26,11 +26,19 @@ class ShoesSpider(scrapy.Spider):
             item_link = shoe.xpath('.//a/@href').extract()[0]
 
             yield scrapy.Request(
-                item_link,
+                response.urljoin(item_link),
                 headers=self.headers,
                 callback=self.parse_details
             )
 
 
     def parse_details(self, response):
-        pass
+        yield {
+            "title": response.xpath('.//span[@data-testid="ProductMainDescription-name"]/text()').get(),
+            "url": response.url,
+            # "price_full": 
+            # "price_drop":
+            "img_url": response.xpath('.//img[@class="iiz__img "][1]/@src').get(),
+            "category": response.xpath('.//a[@data-testid="ViewAllPills-related-category-link"]').extract(),
+        }
+

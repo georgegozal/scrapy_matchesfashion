@@ -6,7 +6,7 @@ Scrapy spider for scraping women's and men's shoes data from the MatchesFashion 
 
 This Scrapy spider allows you to scrape shoe data, including product details and prices, from the MatchesFashion website. The spider is designed to scrape both women's and men's shoe categories.
 
-## Installation
+## Usage
 
 1. Clone the repository to your local machine:
 

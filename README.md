@@ -10,11 +10,11 @@ This Scrapy spider allows you to scrape shoe data, including product details and
 
 1. Clone the repository to your local machine:
 
-       git clone https://github.com/georgegozal/scrapy_matchesfashion.git
+       git clone git@github.com:georgegozal/requests_matchesfashion.git
 
 2. Navigate to the project directory
 
-       cd scrapy_matchesfashion
+       cd requests_matchesfashion
 3. Install the required dependencies:
 
         pip install -r requirements.txt
@@ -22,4 +22,4 @@ This Scrapy spider allows you to scrape shoe data, including product details and
 
 4. Run the code
 
-        scrapy crawl shoes -O shoes.csv
+        python3 main.py
